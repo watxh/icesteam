@@ -1,9 +1,10 @@
 import React from 'react';
+import Getsteamapi from "./components/organisms/Getsteamapi";
 
 function App() {
   return (
     <div>
-      asdf
+      <Getsteamapi></Getsteamapi>
     </div>
   );
 }
