@@ -20,8 +20,6 @@ const Getsteamapi = () =>{
 
     return (
         <>
-            <input value={steamid} onChange={onChangeid}/> <br/>
-            <button onClick={getInfo}>Set</button>
         </>
     )
 }
