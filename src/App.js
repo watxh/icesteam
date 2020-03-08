@@ -40,7 +40,7 @@ const App = () =>{
       <Resultsection>
         {
           urlon === 1
-          ?<Getsteamapi></Getsteamapi>
+          ?<Getsteamapi props={steamurl}></Getsteamapi>
           :<></>
         }
       </Resultsection>
