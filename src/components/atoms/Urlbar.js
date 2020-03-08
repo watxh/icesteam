@@ -20,6 +20,7 @@ const Urlbar = styled.input.attrs({
     height:44px;
     line-height: 44px;
     padding-left:15px;
+    padding-right:40px;
     outline: none;
 `;
 
