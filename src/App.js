@@ -41,7 +41,11 @@ const App = () =>{
         {
           urlon === 1
           ?<Getsteamapi props={steamurl} urlon={setUrlon}></Getsteamapi>
-          :<></>
+          :<>{
+            urlon === 2
+            ?<><Errorimage src="images/Error/Error.png"/></>
+            :<></>
+          }</>
         }
       </Resultsection>
       
@@ -75,5 +79,11 @@ const Resultsection = styled.div `
   text-align:center;
   font-size:32px;
 `;
+
+const Errorimage = styled.img `
+  position:relative;
+  top:-270px;
+  width:350px;
+`
 
 export default App;

@@ -50,6 +50,7 @@ const Getsteamapi = (props) =>{
         })
         setIcecreamnum(parseInt(totalmoney/500));
         setTotalmoney(totalmoney);
+        scrolling();
     }
 
     const getname = async() =>{
@@ -57,7 +58,7 @@ const Getsteamapi = (props) =>{
         const url2 = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=08BAB095FED3B0DB92545F1045CB973A&steamids=" + steamurl;
         const Info2 = await axios.get(proxyurl2 + url2);
         if(Info2.data.response.players.length == 0){
-            props.urlon(0);
+            props.urlon(2);
         }else {
             setSteamname(Info2.data.response.players[0].personaname);
         }
@@ -71,6 +72,10 @@ const Getsteamapi = (props) =>{
 
         return icecreamimage;
     }
+
+    const scrolling = () => setTimeout(function() {
+        scroll.scrollTo(700)
+      }, 200);    
 
     return (
         <>
@@ -90,7 +95,6 @@ const Getsteamapi = (props) =>{
                                 <Icecreamnum top={icecreamnum / 40}>아이스크림 {icecreamnum}개 ({Rtotalmoney}원)</Icecreamnum>
                                 <Standard>(1개/500원 기준)</Standard>
                                 <DDname top={icecreamnum / 40}>Developed by @Jeong-Min Kang<br/>Designed by @전다예(임시)</DDname>
-                                {scroll.scrollTo(700)}
                             </>
                     }
                 </>
