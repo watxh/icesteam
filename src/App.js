@@ -1,7 +1,7 @@
 import React from 'react';
 import Getsteamapi from "./components/organisms/Getsteamapi";
 import styled from 'styled-components';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 
 import Page from "./components/atoms/Page"
 import Titletext from "./components/atoms/Titletext"
@@ -14,6 +14,10 @@ const App = () =>{
 
   const [steamurl ,setSteamurl] = useState('');
   const [urlon ,setUrlon] = useState(0);
+  const [apichange, setApichange] = useState(0);
+
+  const [, updateState] = React.useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
 
   const onChangesteamurl = e =>{
     setSteamurl(e.target.value);
@@ -21,7 +25,10 @@ const App = () =>{
 
   const handleKeyPress =(event) =>{
     if(event.key=='Enter'){
-      setUrlon(1);
+      if(urlon == 1){
+        setApichange(1);
+      }
+        setUrlon(1);
     }
   }
 
@@ -38,15 +45,21 @@ const App = () =>{
       </Titlesection>
 
       <Resultsection>
-        {
-          urlon === 1
-          ?<Getsteamapi props={steamurl} urlon={setUrlon}></Getsteamapi>
-          :<>{
-            urlon === 2
+        {<>
+          {urlon === 1
+            ?<><Getsteamapi props={steamurl} urlon={urlon} setUrlon={setUrlon} apichange={apichange}></Getsteamapi>
+            {apichange==1
+              ?setApichange(0)
+              :<></>
+            }
+            </>
+            :<></>
+          }
+          {urlon === 2
             ?<><Errorimage src="images/Error/Error.png"/></>
             :<></>
-          }</>
-        }
+          }
+        </>}
       </Resultsection>
       
     </Page>

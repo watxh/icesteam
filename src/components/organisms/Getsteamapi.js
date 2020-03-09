@@ -13,7 +13,6 @@ const Getsteamapi = (props) =>{
     const [steamname, setSteamname] = useState('');
     const [icecreamnum, setIcecreamnum] = useState(0);
     const [Rtotalmoney, setTotalmoney] = useState(0);
-
     const [apiload, setApiload] = useState(0);
 
     let steamurl = '';
@@ -57,8 +56,9 @@ const Getsteamapi = (props) =>{
         const proxyurl2 = "https://cors-anywhere.herokuapp.com/";
         const url2 = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=08BAB095FED3B0DB92545F1045CB973A&steamids=" + steamurl;
         const Info2 = await axios.get(proxyurl2 + url2);
+        
         if(Info2.data.response.players.length == 0){
-            props.urlon(2);
+            props.setUrlon(2);
         }else {
             setSteamname(Info2.data.response.players[0].personaname);
         }
@@ -75,12 +75,17 @@ const Getsteamapi = (props) =>{
 
     const scrolling = () => setTimeout(function() {
         scroll.scrollTo(700)
-      }, 200);    
+      }, 200);
 
     return (
-        <>
+            <> {console.log(props.apichange)}
+            {
+                props.apichange == 1
+                ?setApiload(0)
+                :<></>
+            }
             {apiload === 0
-                ? <>{getname()}{getInfo()}  </>
+                ? <>{getname()}{getInfo()}</>
                 : <>
                     {
                         steamname === '' || icecreamnum == 0
