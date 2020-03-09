@@ -40,7 +40,7 @@ const App = () =>{
       <Resultsection>
         {
           urlon === 1
-          ?<Getsteamapi props={steamurl}></Getsteamapi>
+          ?<Getsteamapi props={steamurl} urlon={setUrlon}></Getsteamapi>
           :<></>
         }
       </Resultsection>
@@ -60,16 +60,16 @@ const Title = styled.div `
 `;
 
 const Titlesection = styled.div `
-  position:relative;
-  top:-100px;
+  position:absolute;
   justify-content: center;
   align-items: center;
   text-align:center;
+  margin-top:-80px;
 `;
 
 const Resultsection = styled.div `
   position:relative;
-  top:300px;
+  top:500px;
   justify-content: center;
   align-items: center;
   text-align:center;

@@ -55,9 +55,12 @@ const Getsteamapi = (props) =>{
     const getname = async() =>{
         const proxyurl2 = "https://cors-anywhere.herokuapp.com/";
         const url2 = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=08BAB095FED3B0DB92545F1045CB973A&steamids=" + steamurl;
-        console.log(steamurl);
         const Info2 = await axios.get(proxyurl2 + url2);
-        setSteamname(Info2.data.response.players[0].personaname);
+        if(Info2.data.response.players.length == 0){
+            props.urlon(0);
+        }else {
+            setSteamname(Info2.data.response.players[0].personaname);
+        }
     }
 
     const icecreams = () => {
@@ -72,25 +75,25 @@ const Getsteamapi = (props) =>{
     return (
         <>
             {apiload === 0
-            ?<>
-                {getInfo()}{getname()}
-            </>
-            :<>
-                {
-                    steamname === '' || icecreamnum == 0
-                    ?<Loadingbar><ReactLoading type={"bars"} height={200} width={100} /></Loadingbar>
-                    :<>
-                    <Name>
-                        {steamname}님이 과금을 안했다면,
-                    </Name>
-                    <Icecreamcoll height={parseInt(icecreamnum/40)}>
-                        {icecreams()}
-                    </Icecreamcoll>
-                    <Icecreamnum top={icecreamnum/40}>아이스크림 {icecreamnum}개 ({Rtotalmoney}원)</Icecreamnum>
-                    {scroll.scrollTo(700)}
-                    </>
-                }
-            </>
+                ? <>{getname()}{getInfo()}  </>
+                : <>
+                    {
+                        steamname === '' || icecreamnum == 0
+                            ? <Loadingbar><ReactLoading type={"bars"} height={200} width={100} /></Loadingbar>
+                            : <>
+                                <Name>
+                                    {steamname}님이 과금을 안했다면,
+                                </Name>
+                                <Icecreamcoll height={parseInt(icecreamnum / 40)}>
+                                    {icecreams()}
+                                </Icecreamcoll>
+                                <Icecreamnum top={icecreamnum / 40}>아이스크림 {icecreamnum}개 ({Rtotalmoney}원)</Icecreamnum>
+                                <Standard>(1개/500원 기준)</Standard>
+                                <DDname top={icecreamnum / 40}>Developed by @Jeong-Min Kang<br/>Designed by @전다예(임시)</DDname>
+                                {scroll.scrollTo(700)}
+                            </>
+                    }
+                </>
             }
         </>
     )
@@ -118,6 +121,30 @@ const Icecreamnum = styled.div `
     font-family: 'NanumBarunGothic', sans-serif;
     letter-spacing: -1px;
     text-align:left;
+`;
+
+const Standard = styled.div `
+    position:relative;
+    top:30px;
+    text-align:right;
+    color:white;
+    font-size:20px;
+    font-family: 'NanumBarunGothic', sans-serif;
+    letter-spacing: -1px;
+`;
+
+const DDname = styled.div `
+    position:relative;
+    ${({top}) => top && css`
+        top: ${top*66 + 450}px;
+    `};
+    text-align:center;
+    color:white;
+    font-size:10px;
+    font-family: 'NanumBarunGothic', sans-serif;
+    letter-spacing: -1px;
+
+    margin-bottom:20px;
 `;
 
 export default Getsteamapi;
