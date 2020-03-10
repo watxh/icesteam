@@ -32,7 +32,8 @@ const Getsteamapi = (props) =>{
                         </Icecreamcoll>
                         <Icecreamnum top={props.icecreamnum / 40}>아이스크림 {props.icecreamnum}개 ({props.totalmoney}원)</Icecreamnum>
                         <Standard>(1개/500원 기준)</Standard>
-                        <DDname top={props.icecreamnum / 40} href="www.naver.com">Developed by @Jeong-Min Kang<br />Designed by @전다예(임시)</DDname>
+                        <DDname top={props.icecreamnum / 40} href="https://github.com/watxh">Developed by @Jeong-Min Kang</DDname>
+                        <DDname top={props.icecreamnum / 40} href="https://github.com/Jundaye">Designed by @Jundaye</DDname>
                     </>
             }
 
@@ -74,18 +75,21 @@ const Standard = styled.div `
     letter-spacing: -1px;
 `;
 
-const DDname = styled.div `
+const DDname = styled.a `
     position:relative;
     ${({top}) => top && css`
         top: ${top*66 + 450}px;
     `};
     text-align:center;
     color:white;
-    font-size:10px;
+    font-size:11px;
     font-family: 'NanumBarunGothic', sans-serif;
     letter-spacing: -1px;
+    display:block;
 
-    margin-bottom:20px;
+    &:focus, &:hover, &:visited, &:link, &:active {
+        text-decoration: none;
+    }
 `;
 
 export default Getsteamapi;
