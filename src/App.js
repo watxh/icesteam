@@ -9,26 +9,23 @@ import Subtext from "./components/atoms/Subtext"
 import Urlbar from "./components/atoms/Urlbar"
 import Glass from "./components/atoms/Glass"
 
+import usePromise from "./components/organisms/usePromise"
+
 
 const App = () =>{
 
   const [steamurl ,setSteamurl] = useState('');
-  const [urlon ,setUrlon] = useState(0);
-  const [apichange, setApichange] = useState(0);
+  const [Bsteamurl, setBsteamurl] = useState('');
 
-  const [, updateState] = React.useState();
-  const forceUpdate = useCallback(() => updateState({}), []);
+  const [steaminfo, steamname, icecreamnum,totalmoney,loading,iserror] = usePromise([steamurl])
 
   const onChangesteamurl = e =>{
-    setSteamurl(e.target.value);
+    setBsteamurl(e.target.value);
   }
 
   const handleKeyPress =(event) =>{
-    if(event.key=='Enter'){
-      if(urlon == 1){
-        setApichange(1);
-      }
-        setUrlon(1);
+    if(event.key==='Enter'){
+      setSteamurl(Bsteamurl);
     }
   }
 
@@ -40,28 +37,23 @@ const App = () =>{
         <Titletext>얼마나</Titletext>
         <Titletext>질렀니</Titletext>
         <Subtext>당신의 과금액을 아이스크림 갯수로 환산해 드립니다.</Subtext>
-        <Urlbar placeholder={"스팀 프로필 URL을 입력해 주세요."} value={steamurl} onChange={onChangesteamurl} onKeyPress={handleKeyPress}></Urlbar>
+        <Urlbar placeholder={"스팀 프로필 URL을 입력해 주세요."} value={Bsteamurl} onChange={onChangesteamurl} onKeyPress={handleKeyPress}></Urlbar>
         <Glass src="images/Icons/Glass.png"></Glass>
       </Titlesection>
 
       <Resultsection>
         {<>
-          {urlon === 1
-            ?<><Getsteamapi props={steamurl} urlon={urlon} setUrlon={setUrlon} apichange={apichange}></Getsteamapi>
-            {apichange==1
-              ?setApichange(0)
-              :<></>
-            }
-            </>
+          {iserror === 0 && steamurl !== ''
+            ?<><Getsteamapi steaminfo={steaminfo} steamname={steamname} icecreamnum={icecreamnum} totalmoney={totalmoney} loading={loading} iserror={iserror}></Getsteamapi></>
             :<></>
           }
-          {urlon === 2
+          {iserror === 1 && steamurl !== ''
             ?<><Errorimage src="images/Error/Error.png"/></>
             :<></>
           }
         </>}
       </Resultsection>
-      
+
     </Page>
   );
 }

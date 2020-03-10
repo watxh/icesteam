@@ -8,102 +8,34 @@ import Icecreamcoll from "../molcules/Icecreamcoll"
 import Icecream from "../atoms/Icecream"
 
 const Getsteamapi = (props) =>{
-    const [steamid ,setSteamid] = useState('');
-    const [steaminfo, setSteaminfo] = useState('');
-    const [steamname, setSteamname] = useState('');
-    const [icecreamnum, setIcecreamnum] = useState(0);
-    const [Rtotalmoney, setTotalmoney] = useState(0);
-    const [apiload, setApiload] = useState(0);
-
-    let steamurl = '';
-    
-    let steamurlp = props;
-    steamurlp = steamurlp.props.split('/');
-    steamurl = steamurlp[4];
-
-    let totalmoney = 0;
-
-    const onChangeid = e => {
-        setSteamid(e.target.value);
-    }
-
-    const getInfo = async() =>{
-        setApiload(1);
-        const proxyurl = "https://cors-anywhere.herokuapp.com/";
-        const url = "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=08BAB095FED3B0DB92545F1045CB973A&steamid=" + steamurl;
-        const Info = await axios.get(proxyurl + url);
-        let appids;
-        setSteaminfo(Info.data.response.games);
-        Info.data.response.games.map(async games=> {
-            appids = games.appid + "," + appids;
-        })
-        const Murl = "https://store.steampowered.com/api/appdetails?appids=" + appids + "&cc=KR&filters=price_overview"
-        const Minfo = await axios.get(proxyurl + Murl);
-
-        let dataarray = Object.values(Minfo.data);
-        
-        dataarray.map(data => {
-            if(data.data != null &&data.data.price_overview != undefined){
-                totalmoney = totalmoney + data.data.price_overview.final/100;
-            }
-        })
-        setIcecreamnum(parseInt(totalmoney/500));
-        setTotalmoney(totalmoney);
-        scrolling();
-    }
-
-    const getname = async() =>{
-        const proxyurl2 = "https://cors-anywhere.herokuapp.com/";
-        const url2 = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=08BAB095FED3B0DB92545F1045CB973A&steamids=" + steamurl;
-        const Info2 = await axios.get(proxyurl2 + url2);
-        
-        if(Info2.data.response.players.length == 0){
-            props.setUrlon(2);
-        }else {
-            setSteamname(Info2.data.response.players[0].personaname);
-        }
-    }
 
     const icecreams = () => {
         const icecreamimage = [];
-        for(let i = 0; i < icecreamnum; i++){
+        for(let i = 0; i < props.icecreamnum; i++){
             icecreamimage.push(<Icecream src="images/icecream/Choco.png" left={i%40*2.5 -1} top={parseInt(i/40)}></Icecream>)
         }
 
         return icecreamimage;
     }
 
-    const scrolling = () => setTimeout(function() {
-        scroll.scrollTo(700)
-      }, 200);
-
     return (
-            <> {console.log(props.apichange)}
+        <>
             {
-                props.apichange == 1
-                ?setApiload(0)
-                :<></>
-            }
-            {apiload === 0
-                ? <>{getname()}{getInfo()}</>
-                : <>
-                    {
-                        steamname === '' || icecreamnum == 0
-                            ? <Loadingbar><ReactLoading type={"bars"} height={200} width={100} /></Loadingbar>
-                            : <>
-                                <Name>
-                                    {steamname}님이 과금을 안했다면,
+                props.loading === 1
+                    ? <Loadingbar><ReactLoading type={"bars"} height={200} width={100} /></Loadingbar>
+                    : <>
+                        <Name>
+                            {props.steamname}님이 과금을 안했다면,
                                 </Name>
-                                <Icecreamcoll height={parseInt(icecreamnum / 40)}>
-                                    {icecreams()}
-                                </Icecreamcoll>
-                                <Icecreamnum top={icecreamnum / 40}>아이스크림 {icecreamnum}개 ({Rtotalmoney}원)</Icecreamnum>
-                                <Standard>(1개/500원 기준)</Standard>
-                                <DDname top={icecreamnum / 40}>Developed by @Jeong-Min Kang<br/>Designed by @전다예(임시)</DDname>
-                            </>
-                    }
-                </>
+                        <Icecreamcoll height={parseInt(props.icecreamnum / 40)}>
+                            {icecreams()}
+                        </Icecreamcoll>
+                        <Icecreamnum top={props.icecreamnum / 40}>아이스크림 {props.icecreamnum}개 ({props.totalmoney}원)</Icecreamnum>
+                        <Standard>(1개/500원 기준)</Standard>
+                        <DDname top={props.icecreamnum / 40} href="www.naver.com">Developed by @Jeong-Min Kang<br />Designed by @전다예(임시)</DDname>
+                    </>
             }
+
         </>
     )
 }
